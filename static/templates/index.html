@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>A Simple Map</title>
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet' />
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; left:0; right:300px; }
+    #editor {
+      position:absolute;
+      top:20px;
+      right:0;
+      width:300px;
+      border:0;
+      bottom:0;
+      font:normal 12px/15px monospace;
+    }
+    #cover {
+        position:absolute;
+        right:0;
+        top:0;
+        width:300px;
+        height:20px;
+    }
+  </style>
+</head>
+<body>
+<button id='cover'>compute cover</button>
+<div id='map'></div>
+<textarea id='editor'>
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -125.41992187499999,
+              49.03786794532644
+            ],
+            [
+              -94.74609375,
+              49.61070993807422
+            ],
+            [
+              -86.923828125,
+              47.040182144806664
+            ],
+            [
+              -81.474609375,
+              41.96765920367816
+            ],
+            [
+              -68.64257812499999,
+              48.10743118848039
+            ],
+            [
+              -67.060546875,
+              46.195042108660154
+            ],
+            [
+              -67.060546875,
+              44.402391829093915
+            ],
+            [
+              -74.794921875,
+              38.61687046392973
+            ],
+            [
+              -75.41015624999999,
+              34.74161249883172
+            ],
+            [
+              -80.85937499999999,
+              30.90222470517144
+            ],
+            [
+              -79.62890625,
+              24.367113562651276
+            ],
+            [
+              -82.79296874999999,
+              24.5271348225978
+            ],
+            [
+              -84.462890625,
+              28.76765910569123
+            ],
+            [
+              -93.779296875,
+              27.761329874505233
+            ],
+            [
+              -96.50390625,
+              24.367113562651276
+            ],
+            [
+              -105.29296874999999,
+              28.304380682962783
+            ],
+            [
+              -116.45507812500001,
+              30.675715404167743
+            ],
+            [
+              -120.84960937499999,
+              32.02670629333614
+            ],
+            [
+              -124.892578125,
+              38.47939467327645
+            ],
+            [
+              -125.41992187499999,
+              43.58039085560786
+            ],
+            [
+              -124.8046875,
+              46.49839225859763
+            ],
+            [
+              -125.41992187499999,
+              49.03786794532644
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
+</textarea>
+<script>
+var map = L.mapbox.map('map', 'examples.map-9ijuk24y')
+    .setView([40, -74.50], 9);
+
+var features = L.geoJson().addTo(map);
+var coverLayer = L.geoJson().addTo(map);
+
+$('#cover').click(function() {
+    features.clearLayers();
+    var gj = JSON.parse($('#editor').val());
+    features.addData(gj);
+    $.ajax({
+        url: '/getCover',
+        type: 'post',
+        dataType: 'json',
+        success: function(data) {
+            coverLayer.clearLayers();
+            coverLayer.addData(data);
+        },
+        data: {
+            geojson: gj
+        }
+    });
+});
+</script>
+</body>
+</html>

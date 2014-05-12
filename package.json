@@ -1,0 +1,22 @@
+{
+  "name": "s2-server",
+  "version": "0.0.0",
+  "description": "a rest api for the s2 library",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "keywords": [
+    "s2",
+    "geometry",
+    "indexing",
+    "library"
+  ],
+  "author": "Tom MacWright",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "~4.1.0",
+    "handlebars": "~2.0.0-alpha.2",
+    "s2": "0.2.1"
+  }
+}
