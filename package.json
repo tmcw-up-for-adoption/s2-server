@@ -18,5 +18,8 @@
     "hapi": "~4.1.0",
     "handlebars": "~2.0.0-alpha.2",
     "s2": "0.2.1"
+  },
+  "engines": {
+    "node": "0.10.x"
   }
 }
